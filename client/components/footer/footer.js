@@ -1,8 +1,8 @@
-app.directive('footer', function ($rootScope, $state) {
+app.directive('footer', function () {
 
     return {
         restrict: 'E',
         scope: {},
-        templateUrl: 'js/common/directives/footer/footer.html'
+        templateUrl: 'components/footer/footer.html'
       }
 });
