@@ -1,3 +1,3 @@
 Built for PortfolioStrat
 
-Run 'npm install' and open browser to 'localhost:1337' to run
+Run 'npm install' followed by 'npm run start' and open browser to 'localhost:1337' to run

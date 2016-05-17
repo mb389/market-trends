@@ -7,5 +7,10 @@ app.factory('ChartFactory',function($http) {
       .then(res => res.data);
   }
 
+  obj.getEventData = function() {
+      return $http.get(`/data/get/`)
+      .then(res => res.data)
+    }
+
   return obj;
 })

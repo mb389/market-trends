@@ -1,8 +1,9 @@
-app.controller('HomeCtrl', function ($scope,ChartFactory,spyHistory) {
+app.controller('HomeCtrl', function ($scope,ChartFactory,spyHistory, eventData) {
 
 $scope.spyHistory=spyHistory;
+$scope.eventData=eventData;
 
-console.log($scope.spyHistory)
+
 
 $scope.chartConfig = {
        options: {
@@ -20,7 +21,7 @@ $scope.chartConfig = {
        xAxis: {title:{text:"Date"}},
        yAxis: {title:{text:"Price"}},
        title: {
-           text: 'S&P 500 Historical Closing Prices'
+           text: 'S&P 500 Prices and Economic Announcements'
        },
        useHighStocks: true
    }
@@ -28,19 +29,24 @@ $scope.chartConfig = {
     // Add flags
     $scope.chartConfig.series.push({
         type: 'flags',
+        id: 'events',
         name: 'Events',
         color: '#333333',
         fillColor: 'rgba(255,255,255,0.8)',
         data: [
-            { x: Date.UTC(2012, 10, 1), text: 'Highsoft won "Entrepeneur of the Year" in Sogn og Fjordane, Norway', title: 'Award' },
-            { x: Date.UTC(2012, 11, 25), text: 'Packt Publishing published <em>Learning Highcharts by Example</em>. Since then, many other books are written about Highcharts.', title: 'First book' },
-            { x: Date.UTC(2013, 4, 25), text: 'Highsoft nominated Norway\'s Startup of the Year', title: 'Award' },
             { x: Date.UTC(2014, 4, 25), text: 'Highsoft nominated Best Startup in Nordic Startup Awards', title: 'Award' }
         ],
         onSeries: 'spy',
         showInLegend: false
     });
 
+
+    //loading DB events into chart data
+    $scope.eventData.forEach(el => {
+      $scope.chartConfig.series[1].data.push({x: Date.parse(el.event_date), text:el.event_name, title: el.country})
+    })
+
+console.log($scope.chartConfig.series[1].data)
 
 
 

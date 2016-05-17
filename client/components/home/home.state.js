@@ -7,6 +7,9 @@ app.config(function ($stateProvider) {
       resolve: {
         spyHistory: function(ChartFactory) {
           return ChartFactory.getTickerData('SPY');
+        },
+        eventData: function(ChartFactory) {
+          return ChartFactory.getEventData();
         }
       }
   });
