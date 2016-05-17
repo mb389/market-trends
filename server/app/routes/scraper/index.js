@@ -17,13 +17,14 @@ function generateUrls(currentYear,currentMonth) {
   })
 }
 
-// store all urls in a global variable
-Pages = generateUrls(2016,5);
+var runScraper = function() {
+  Pages = generateUrls(2016,5).splice(0,2);
+  wizard();
+}
 
 function wizard() {
-  // if the Pages array is empty, we are Done!!
   if (!Pages.length) {
-    return console.log('Done!');
+    return console.log("Done!")
   }
   var nextUrl = Pages.pop();
   var scraper = new Scraper(nextUrl);
@@ -39,7 +40,6 @@ function wizard() {
 
 //store in DB once complete
   scraper.on('complete', function (listing) {
-
     listing.forEach(function(el) {
       model = new Events(el);
       model.save(function(err) {
@@ -48,9 +48,9 @@ function wizard() {
         }
       });
     })
-
     wizard();
   });
+
 }
 
-module.exports=wizard;
+module.exports=runScraper;

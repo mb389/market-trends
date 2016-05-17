@@ -2,7 +2,7 @@
      MAIN
 =============================================*/
 #main {
-  margin: 50px;
+  margin: 20px;
   height: 80%;
 
 }
@@ -11,9 +11,14 @@
   display: block;
   border: solid 1px #eee;
   border-bottom: solid 1px #ccc;
-  // height: 80%;
-  // width: 80%;
+  margin-bottom: 10px;
+}
 
+button {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 150px;
 }
 
 

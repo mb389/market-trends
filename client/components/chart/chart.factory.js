@@ -7,6 +7,11 @@ app.factory('ChartFactory',function($http) {
       .then(res => res.data);
   }
 
+  obj.scrapeData = function() {
+    return $http.post(`/data/scrape/`)
+    .then(res => res)
+  }
+
   obj.getEventData = function() {
       return $http.get(`/data/get/`)
       .then(res => res.data)
