@@ -33,9 +33,7 @@ $scope.chartConfig = {
         name: 'Events',
         color: '#333333',
         fillColor: 'rgba(255,255,255,0.8)',
-        data: [
-            { x: Date.UTC(2014, 4, 25), text: 'Highsoft nominated Best Startup in Nordic Startup Awards', title: 'Award' }
-        ],
+        data: [],
         onSeries: 'spy',
         showInLegend: false
     });

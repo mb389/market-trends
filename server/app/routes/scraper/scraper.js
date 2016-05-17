@@ -59,7 +59,6 @@ Scraper.prototype.parsePage = function (html) {
   var events = [];
   var year=this.year;
   var month=this.month;
-  console.log(this)
 
   $('tr#day-row td.calnavday').each(function(i,el) { //dates from calendar nav
       dates.push({year: Number(year),month: Number(month),day: Number($(el).text())})
@@ -77,29 +76,28 @@ Scraper.prototype.parsePage = function (html) {
       console.log(dates[dates.length-1])
 
     $('td.events').has('.econoevents').each(function(i,el) {
-        var event={};
-        var data=[];
+
+      var data=[];
         $(el).children().each(function(j,el2) {
           if ($(el2).text() !== "") {
+            var event={};
             var eventText=$(el2).children().text();
             event.name=eventText.substr(eventText.indexOf(':')+1);
             event.country=eventText.substr(0,eventText.indexOf(':'));
             data.push(event);
           }
         })
-        data.sort(function(a,b) {
-          return a.name > b.name ? 1 : -1;
-        })
+
         if (i%5===0 && dates[i]) {//only storing one day per workweek
-          events.push({event_date: Date.UTC(dates[i].year,dates[i].month-1,dates[i].day),})
+          data.sort(function(a,b) {
+            return a.name > b.name ? 1 : -1;
+          })
+          events.push({event_date: new Date(dates[i].year,dates[i].month-1,dates[i].day),event: data})
         }
     })
 
-
-    console.log(events)
-
     var model = events.map(function(el,idx) {
-        return {event_date: el.date, country: el.event.country, event_name: el.event.name}
+        return {event_date: el.event_date, country: el.event[0].country, event_name: el.event[0].name}
     })
 
   return model;

@@ -3,7 +3,7 @@ module.exports = router;
 var mongoose = require('mongoose');
 var yahooFinance = require('yahoo-finance');
 var Events = mongoose.model('Events');
-var runScraper = require('./scraper/bot.js')
+var runScraper = require('./scraper')
 
 router.get('/get', (req, res, next) => {
   Events.find({})
