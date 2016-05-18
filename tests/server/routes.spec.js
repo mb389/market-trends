@@ -3,8 +3,6 @@ require('../../server/db');
 var Events = mongoose.model('Events');
 var should = require('should');
 var expect = require('chai').expect;
-var dbURI = 'mongodb://localhost:27017/portfoliostrat';
-// var clearDB = require('mocha-mongoose')(dbURI);
 
 var app = require('../../server/app');
 var request = require('supertest');

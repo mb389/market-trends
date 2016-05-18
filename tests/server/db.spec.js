@@ -47,17 +47,12 @@ describe('Events model',function() {
       })
     })
   })
-
-
 })
 
 
 describe('Adding entries',function() {
-
-
   var event;
   beforeEach(function(done) {
-
       Events.create({
           event_date: new Date(),
           event_name: 'Interest Rate Announced',
