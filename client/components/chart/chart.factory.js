@@ -1,4 +1,9 @@
-app.factory('ChartFactory',function($http) {
+(function() {
+angular
+  .module('PortfolioApp')
+  .factory('ChartFactory',ChartFactory)
+
+  function ChartFactory($http) {
 
   var obj={};
 
@@ -24,4 +29,5 @@ app.factory('ChartFactory',function($http) {
     }
 
   return obj;
-})
+}
+})();

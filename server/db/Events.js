@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
     event_date: {
-      type: Date
+      type: Date,
+      required: true
     },
     country: {
       type: String
