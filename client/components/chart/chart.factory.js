@@ -1,33 +1,40 @@
 (function() {
-angular
-  .module('PortfolioApp')
-  .factory('ChartFactory',ChartFactory)
+  angular
+    .module('PortfolioApp')
+    .factory('ChartFactory',ChartFactory)
 
-  function ChartFactory($http) {
+    ChartFactory.$inject = ['$http'];
+    function ChartFactory($http) {
 
-  var obj={};
+    return {
+      getTickerData,
+      scrapeData,
+      getEventData
+    }
 
-  obj.getTickerData = function(ticker) {
-      return $http.get(`/data/history/${ticker}`)
-      .then(res => res.data);
-  }
+    function getTickerData(ticker) {
+        return $http.get(`/data/history/${ticker}`)
+        .then(res => res.data)
+        .catch(err => console.log(err))
+    }
 
-  obj.scrapeData = function() {
-    return $http.post(`/data/scrape/`)
-    .then(res => res)
-  }
+    function scrapeData() {
+      return $http.post(`/data/scrape/`)
+      .then(res => res)
+      .catch(err => console.log(err))
+    }
 
-  obj.getEventData = function() {
+    function getEventData() {
       return $http.get(`/data/get/`)
       .then(res => {
         if(res.data.length!==0) return res.data;
         else {
           return this.scrapeData()
           .then(() => this.getEventData())
+          .catch(err => console.log(err))
         }
       })
+      .catch(err => console.log(err))
     }
-
-  return obj;
-}
+  }
 })();

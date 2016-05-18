@@ -9,13 +9,11 @@ require('./config')(app);
 app.use('/data', require('./routes'));
 
 app.use(function (req, res, next) {
-
     if (path.extname(req.path).length > 0) {
         res.status(404).end();
     } else {
         next(null);
     }
-
 });
 
 app.get('/*', function (req, res) {

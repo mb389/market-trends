@@ -1,9 +1,9 @@
 var router = require('express').Router();
 module.exports = router;
 var mongoose = require('mongoose');
-var yahooFinance = require('./yahoofinance');
+var yahooFinance = require('../resources/yahoofinance');
 var Events = mongoose.model('Events');
-var runScraper = require('./scraper')
+var runScraper = require('../resources/scraper')
 
 router.get('/get', (req, res, next) => {
   Events.find({})
@@ -14,10 +14,10 @@ router.get('/get', (req, res, next) => {
 
 router.get('/history/:ticker', (req, res, next) => {
   yahooFinance.historical({
-  symbol: req.params.ticker,
-  from: '2015-01-01',
-  period: 'w'
-  })
+    symbol: req.params.ticker,
+    from: '2015-01-01',
+    period: 'w'
+    })
   .then(raw => raw.map(el => [Date.parse(el.date),el.close]))
   .then(prices => res.json(prices))
   .catch(next)
@@ -27,6 +27,6 @@ router.get('/history/:ticker', (req, res, next) => {
 router.post('/scrape', (req, res, next) => {
   Events.remove({})
   .then(() => runScraper())
-  .then((msg) => res.send(msg))
+  .then(complete => res.send(complete))
   .catch(next)
 })
