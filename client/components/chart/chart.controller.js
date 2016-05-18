@@ -18,6 +18,7 @@ angular
 
     function scrape() {
       clearEventDataFromChart()
+      $scope.chartConfig.loading=true;
       ChartFactory.scrapeData()
       .then(()=> activate())
     }
@@ -27,6 +28,7 @@ angular
       eventData.forEach(el => {
         $scope.chartConfig.series[1].data.push({x: Date.parse(el.event_date), text:el.event_name, title: el.country})
       })
+      $scope.chartConfig.loading=false;
     }
 
     function clearEventDataFromChart() {
@@ -58,7 +60,7 @@ angular
        yAxis: { title: { text: "Price" } },
        title: { text: 'S&P 500 Prices and Economic Announcements' },
        useHighStocks: true,
-       loading: false
+       loading: true
      }
   }
 })();
