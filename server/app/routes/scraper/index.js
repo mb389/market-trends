@@ -18,7 +18,8 @@ function generateUrls(currentYear,currentMonth) {
 }
 
 var runScraper = function() {
-  Pages = generateUrls(2016,5);
+  var currentDate = new Date();
+  Pages = generateUrls(currentDate.getFullYear(),currentDate.getMonth()+1);
   var completeCount=0;
   var totalCount=Pages.length;
   var p = new Promise(function(resolve,reject){
@@ -31,7 +32,7 @@ var runScraper = function() {
       // if error, go to next request
       scraper.on('error', function (error) {
         console.log(error);
-        // wizard();
+        completeCount++;
       });
 
     //store in DB once complete
@@ -39,9 +40,8 @@ var runScraper = function() {
         listing.forEach(function(el) {
           model = new Events(el);
           model.save(function(err) {
-            if (err) {
+            if (err)
               console.log('Database err saving: ' + nextUrl[0]);
-            }
           });
         })
         completeCount++;
@@ -52,11 +52,7 @@ var runScraper = function() {
       });
     }
   })
-
   return p;
-
 }
-
-
 
 module.exports=runScraper;

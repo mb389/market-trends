@@ -16,7 +16,6 @@ router.get('/history/:ticker', (req, res, next) => {
   yahooFinance.historical({
   symbol: req.params.ticker,
   from: '2015-01-01',
-  to: '2016-05-15',
   period: 'w'
   })
   .then(raw => raw.map(el => [Date.parse(el.date),el.close]))

@@ -14,7 +14,13 @@ app.factory('ChartFactory',function($http) {
 
   obj.getEventData = function() {
       return $http.get(`/data/get/`)
-      .then(res => res.data)
+      .then(res => {
+        if(res.data.length!==0) return res.data;
+        else {
+          return this.scrapeData()
+          .then(() => this.getEventData())
+        }
+      })
     }
 
   return obj;

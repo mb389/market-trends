@@ -22,8 +22,8 @@ $scope.chartConfig = {
            navigator: { enabled: true }
        },
        series: [ {id: 'spy', name: 'SPY', data: $scope.spyHistory} ],
-       xAxis: { title:{text:"Date"} },
-       yAxis: { title:{text:"Price"} },
+       xAxis: { title: { text: "Date" } },
+       yAxis: { title: { text: "Price" } },
        title: { text: 'S&P 500 Prices and Economic Announcements' },
        useHighStocks: true,
        loading: false
@@ -49,6 +49,7 @@ $scope.chartConfig = {
     }
 
     function clearEventDataFromChart() {
-      $scope.chartConfig.series[1].data=[];
+      if ($scope.chartConfig.series[1].data.length)
+        $scope.chartConfig.series[1].data=[];
     }
 })
