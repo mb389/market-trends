@@ -39,15 +39,11 @@ describe('Events model',function() {
             expect(err.errors.country).to.be.an('object');
             done();
          })
-       it('errors if there if country is less than 2 chars',function(done){
-          event.validate(function(err){
-             expect(err.errors.country).to.be.an('object');
-             done();
-          })
+
       })
     })
   })
-})
+
 
 
 describe('Adding entries',function() {
@@ -57,7 +53,7 @@ describe('Adding entries',function() {
           event_date: new Date(),
           event_name: 'Interest Rate Announced',
           country: 'US'
-      }).then(res => {
+      }).then(function(res) {
         event=res;
         done()
       })
