@@ -3,24 +3,16 @@ var cheerio = require('cheerio');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var STATUS_CODES = http.STATUS_CODES;
-/*
- * Scraper Constructor
-**/
-function Scraper (data) {
 
+function Scraper (data) {
     this.url = data[0];
     this.year = data[1];
     this.month = data[2];
     this.init();
 }
-/*
- * Make it an EventEmitter
-**/
+
 util.inherits(Scraper, EventEmitter);
 
-/*
- * Initialize scraping
-**/
 Scraper.prototype.init = function () {
     var model;
     var self = this;
@@ -50,9 +42,7 @@ Scraper.prototype.loadWebPage = function () {
     self.emit('error', err);
   });
 };
-/*
- * Parse html and return an object
-**/
+
 Scraper.prototype.parsePage = function (html) {
   var $ = cheerio.load(html);
   var dates=[],navDates=[];
@@ -64,16 +54,16 @@ Scraper.prototype.parsePage = function (html) {
       dates.push({year: Number(year),month: Number(month),day: Number($(el).text())})
     });
 
-    $('td.navwkday').each(function(i,el) { //dates from calendar headings
-        navDates.push(Number($(el).text().replace(/[^0-9]/g, '')))
-      });
+  $('td.navwkday').each(function(i,el) { //dates from calendar headings
+      navDates.push(Number($(el).text().replace(/[^0-9]/g, '')))
+    });
 
-      var k=0;
-      while (navDates[k] > 22 && dates[k].day < 7) { //reconciling date arrays
-        dates.splice(k,0,{year: month==1 ? Number(year)-1 : Number(year), month: month==1 ? 12 : month-1, day: navDates[k]})
-        k++;
-      }
-      console.log(dates[dates.length-1])
+    var k=0;
+    while (navDates[k] > 22 && dates[k].day < 7) { //reconciling date arrays
+      dates.splice(k,0,{year: month==1 ? Number(year)-1 : Number(year), month: month==1 ? 12 : month-1, day: navDates[k]})
+      k++;
+    }
+    console.log(dates[dates.length-1])
 
     $('td.events').has('.econoevents').each(function(i,el) {
 
@@ -89,17 +79,13 @@ Scraper.prototype.parsePage = function (html) {
         })
 
         if (i%5===0 && dates[i]) {//only storing one day per workweek
-          data.sort(function(a,b) {
-            return a.name > b.name ? 1 : -1;
-          })
+          data.sort((a,b) => a.name > b.name ? 1 : -1);
           events.push({event_date: new Date(dates[i].year,dates[i].month-1,dates[i].day),event: data})
         }
     })
 
-    var model = events.map(function(el,idx) {
+    return events.map(function(el,idx) {
         return {event_date: el.event_date, country: el.event[0].country, event_name: el.event[0].name}
     })
-
-  return model;
 };
 module.exports = Scraper;

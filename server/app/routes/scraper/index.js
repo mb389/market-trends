@@ -18,39 +18,45 @@ function generateUrls(currentYear,currentMonth) {
 }
 
 var runScraper = function() {
-  Pages = generateUrls(2016,5).splice(0,2);
-  wizard();
-}
+  Pages = generateUrls(2016,5);
+  var completeCount=0;
+  var totalCount=Pages.length;
+  var p = new Promise(function(resolve,reject){
+    while(Pages.length) {
+      var nextUrl = Pages.pop();
+      var scraper = new Scraper(nextUrl);
+      var model;
+      console.log('Requests Left: ' + Pages.length);
 
-function wizard() {
-  if (!Pages.length) {
-    return console.log("Done!")
-  }
-  var nextUrl = Pages.pop();
-  var scraper = new Scraper(nextUrl);
-  var model;
-  console.log('Requests Left: ' + Pages.length);
+      // if error, go to next request
+      scraper.on('error', function (error) {
+        console.log(error);
+        // wizard();
+      });
 
-
-  // if error, go to next request
-  scraper.on('error', function (error) {
-    console.log(error);
-    wizard();
-  });
-
-//store in DB once complete
-  scraper.on('complete', function (listing) {
-    listing.forEach(function(el) {
-      model = new Events(el);
-      model.save(function(err) {
-        if (err) {
-          console.log('Database err saving: ' + nextUrl[0]);
+    //store in DB once complete
+      scraper.on('complete', function (listing) {
+        listing.forEach(function(el) {
+          model = new Events(el);
+          model.save(function(err) {
+            if (err) {
+              console.log('Database err saving: ' + nextUrl[0]);
+            }
+          });
+        })
+        completeCount++;
+        if (completeCount===totalCount) {
+          console.log("Done!")
+          resolve('success')
         }
       });
-    })
-    wizard();
-  });
+    }
+  })
+
+  return p;
 
 }
+
+
 
 module.exports=runScraper;

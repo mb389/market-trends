@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var yahooFinance = require('./yahoofinance');
 var Events = mongoose.model('Events');
 var runScraper = require('./scraper')
-var Promise = require('bluebird')
 
 router.get('/get', (req, res, next) => {
   Events.find({})
@@ -29,7 +28,6 @@ router.get('/history/:ticker', (req, res, next) => {
 router.post('/scrape', (req, res, next) => {
   Events.remove({})
   .then(() => runScraper())
+  .then((msg) => res.send(msg))
   .catch(next)
-
-
 })

@@ -12,27 +12,19 @@ function activate() {
 $scope.scrape = function() {
   clearEventDataFromChart()
   ChartFactory.scrapeData()
-  setTimeout(activate,10000)
+  .then(()=> activate())
 }
 
 $scope.chartConfig = {
        options: {
-           chart: {
-               zoomType: 'x'
-           },
-           rangeSelector: {
-               enabled: true
-           },
-           navigator: {
-               enabled: true
-           }
+           chart: { zoomType: 'x' },
+           rangeSelector: { enabled: true },
+           navigator: { enabled: true }
        },
-       series: [{id: 'spy', name: 'SPY', data: $scope.spyHistory}],
-       xAxis: {title:{text:"Date"}},
-       yAxis: {title:{text:"Price"}},
-       title: {
-           text: 'S&P 500 Prices and Economic Announcements'
-       },
+       series: [ {id: 'spy', name: 'SPY', data: $scope.spyHistory} ],
+       xAxis: { title:{text:"Date"} },
+       yAxis: { title:{text:"Price"} },
+       title: { text: 'S&P 500 Prices and Economic Announcements' },
        useHighStocks: true,
        loading: false
    }
@@ -50,21 +42,13 @@ $scope.chartConfig = {
     });
 
     function loadEventDataIntoChart(eventData) {
-      console.log("load called")
       //loading DB events into chart data
-      setTimeout(function(){
-        eventData.forEach(el => {
-          $scope.chartConfig.series[1].data.push({x: Date.parse(el.event_date), text:el.event_name, title: el.country})
-        })
-        $scope.$digest()
-
-      },0)
-
+      eventData.forEach(el => {
+        $scope.chartConfig.series[1].data.push({x: Date.parse(el.event_date), text:el.event_name, title: el.country})
+      })
     }
 
     function clearEventDataFromChart() {
       $scope.chartConfig.series[1].data=[];
     }
-
-
 })
