@@ -1,6 +1,7 @@
 var http = require('http');
 var cheerio = require('cheerio');
 var util = require('util');
+var _ = require('lodash');
 var EventEmitter = require('events').EventEmitter;
 var STATUS_CODES = http.STATUS_CODES;
 
