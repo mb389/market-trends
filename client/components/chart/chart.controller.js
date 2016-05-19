@@ -17,10 +17,12 @@ angular
     }
 
     function scrape() {
+      if (!$scope.chartConfig.loading) {
       clearEventDataFromChart()
       $scope.chartConfig.loading=true;
       ChartFactory.scrapeData()
       .then(()=> activate())
+      }
     }
 
     function loadEventDataIntoChart(eventData) {
